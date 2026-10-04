@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+.next/
+out/
+dist/
+
+# Local secrets and environment
+.env
+.env.*
+!.env.example
+.sops.*
+
+# Runtime and generated artifacts
+*.log
+coverage/
+playwright-report/
+test-results/
+*.tfstate
+*.tfstate.*
+.terraform/
+
+# Editors and operating systems
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
