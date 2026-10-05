@@ -11,8 +11,10 @@ dependencies = [
   "alembic>=1.13,<2",
   "argon2-cffi>=23.1,<26",
   "asyncpg>=0.29,<1",
+  "boto3>=1.35,<2",
   "celery[redis]>=5.4,<6",
   "fastapi>=0.115,<1",
+  "fastembed>=0.4,<1",
   "email-validator>=2.2,<3",
   "httpx>=0.27,<1",
   "litellm>=1.50,<2",
@@ -32,7 +34,6 @@ lumen-api = "lumen.cli:main"
 
 [project.optional-dependencies]
 dev = ["pytest>=8,<9", "pytest-asyncio>=0.24,<1", "ruff>=0.8,<1"]
-embeddings = ["fastembed>=0.4,<1"]
 oidc = ["authlib>=1.3,<2"]
 
 [tool.setuptools.packages.find]

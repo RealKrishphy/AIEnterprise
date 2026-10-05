@@ -49,9 +49,9 @@ The implementation follows the requested stack: Python 3.12, FastAPI, SQLAlchemy
 
 ## Delivery phases
 
-0. Architecture, ADRs, and repository scaffold (this phase)
-1. Authentication, tenancy, and database schema
-2. Asynchronous ingestion pipeline
+0. Architecture, ADRs, and repository scaffold (complete)
+1. Authentication, tenancy, and database schema (foundation implemented; integration hardening remains)
+2. Asynchronous ingestion pipeline (implemented; database/object-store/ClamAV integration requires services)
 3. Hybrid retrieval, reranking, and streaming answers
 4. Caching, rate limits, and resilience
 5. Evaluation harness and CI regression gates
@@ -63,7 +63,7 @@ The implementation follows the requested stack: Python 3.12, FastAPI, SQLAlchemy
 
 ## Development
 
-The local compose stack and one-command startup are introduced with the runnable services in later phases. Until then, this scaffold is documentation-only and is not a runnable application. See [the ADRs](docs/adrs/) for the decisions that constrain implementation.
+The API and document ingestion worker are implemented; the local compose stack and one-command startup are not yet available. See [API setup](apps/api/README.md) for the current requirements and [the ADRs](docs/adrs/) for the decisions that constrain implementation.
 
 ## Performance and security targets
 
