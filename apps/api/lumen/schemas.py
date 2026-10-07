@@ -1,7 +1,7 @@
 import uuid
-from typing import Annotated
+from typing import Annotated, Literal
 
-from pydantic import BaseModel, ConfigDict, EmailStr, Field, StringConstraints
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, StringConstraints, field_validator
 
 Password = Annotated[str, StringConstraints(min_length=12, max_length=256)]
 
@@ -29,6 +29,23 @@ class TokenResponse(BaseModel):
 
 class RefreshRequest(BaseModel):
     refresh_token: str
+
+
+class QueryTurn(BaseModel):
+    role: Literal["user", "assistant"]
+    content: str = Field(min_length=1, max_length=4000)
+
+
+class QueryRequest(BaseModel):
+    query: str = Field(min_length=1, max_length=4000)
+    history: list[QueryTurn] = Field(default_factory=list, max_length=20)
+
+    @field_validator("query")
+    @classmethod
+    def query_must_not_be_blank(cls, value: str) -> str:
+        if not value.strip():
+            raise ValueError("Query must not be blank")
+        return value
 
 
 class DocumentResponse(BaseModel):

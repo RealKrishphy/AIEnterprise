@@ -34,3 +34,18 @@ celery -A lumen.celery_app:celery_app worker --loglevel=INFO --queues=ingest-00,
 Workers parse PDF/DOCX/TXT/MD files, split text into heading-aware overlapping chunks, batch
 embed using BGE-small, and upsert tenant-scoped chunks with vector and full-text search data.
 Failed jobs retry with backoff and are recorded on the dead-letter queue after the retry limit.
+
+## Hybrid search and grounded answers
+
+`POST /query/stream` accepts a query and up to 20 prior user/assistant turns. It embeds the query,
+retrieves tenant- and document-authorized candidates with PostgreSQL vector and full-text search,
+fuses the rankings with reciprocal-rank fusion, reranks the candidates, and streams validated,
+cited answers as server-sent events. The retrieval SQL applies document access predicates before
+candidate ranking. If generation is unavailable, the stream returns authorized passages as a
+retrieval-only answer; if no authorized passages match, it refuses without calling a model.
+
+Configure `LUMEN_RERANKER_MODEL`, `LUMEN_RETRIEVAL_CANDIDATES`,
+`LUMEN_RERANK_RESULTS`, and `LUMEN_CONTEXT_TOKEN_BUDGET` to tune bounded retrieval work.
+`LUMEN_LLM_FALLBACK_MODELS` is a comma-separated LiteLLM model chain used after the primary
+`LUMEN_LLM_MODEL`. Hosted provider quotas and first-token performance depend on the chosen free
+tiers; no production latency target is implied by local tests.

@@ -51,8 +51,8 @@ The implementation follows the requested stack: Python 3.12, FastAPI, SQLAlchemy
 
 0. Architecture, ADRs, and repository scaffold (complete)
 1. Authentication, tenancy, and database schema (foundation implemented; integration hardening remains)
-2. Asynchronous ingestion pipeline (implemented; database/object-store/ClamAV integration requires services)
-3. Hybrid retrieval, reranking, and streaming answers
+2. Asynchronous ingestion pipeline (implementation committed; database/object-store/ClamAV integration requires services)
+3. Hybrid retrieval, reranking, and streaming answers (implemented; database/model integration requires services)
 4. Caching, rate limits, and resilience
 5. Evaluation harness and CI regression gates
 6. Observability

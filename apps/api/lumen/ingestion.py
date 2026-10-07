@@ -3,6 +3,7 @@ import re
 import zipfile
 from collections.abc import Iterable
 from dataclasses import dataclass
+from functools import lru_cache
 
 from docx import Document as WordDocument
 from pypdf import PdfReader
@@ -112,11 +113,7 @@ def chunk_text(text: str, max_words: int = 300, overlap_words: int = 50) -> list
 
 
 def embed_texts(texts: list[str], model_name: str, batch_size: int) -> list[list[float]]:
-    try:
-        from fastembed import TextEmbedding
-    except ImportError as exc:
-        raise RuntimeError("Install the fastembed dependency to process documents") from exc
-    model = TextEmbedding(model_name=model_name)
+    model = _embedding_model(model_name)
     vectors: list[list[float]] = []
     for offset in range(0, len(texts), batch_size):
         batch = texts[offset : offset + batch_size]
@@ -124,3 +121,12 @@ def embed_texts(texts: list[str], model_name: str, batch_size: int) -> list[list
     if len(vectors) != len(texts):
         raise RuntimeError("Embedding model returned an unexpected number of vectors")
     return vectors
+
+
+@lru_cache(maxsize=1)
+def _embedding_model(model_name: str):
+    try:
+        from fastembed import TextEmbedding
+    except ImportError as exc:
+        raise RuntimeError("Install the fastembed dependency to process documents") from exc
+    return TextEmbedding(model_name=model_name)
